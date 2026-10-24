@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c5f91">
+  <meta name="description" content="Viagem — Carro em trajeto. Novos caminhos, boas companhias e grandes histórias.">
+  <title>Viagem — Carro em trajeto</title>
+  <style>
+    :root {
+      --blue: #075b91;
+      --deep-blue: #07344d;
+      --gold: #f5b84b;
+      --cream: #fffaf1;
+      --ink: #153142;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink); background: var(--cream); line-height: 1.6;
+    }
+    a { color: inherit; }
+    .topbar {
+      position: absolute; z-index: 5; inset: 0 0 auto; display: flex; align-items: center;
+      justify-content: space-between; padding: 20px clamp(18px, 5vw, 72px); color: white;
+    }
+    .brand { font-size: 1.15rem; font-weight: 800; letter-spacing: .04em; text-decoration: none; }
+    .brand span { color: var(--gold); }
+    nav { display: flex; gap: 24px; align-items: center; }
+    nav a { text-decoration: none; font-weight: 650; font-size: .94rem; text-shadow: 0 1px 8px #123; }
+    nav a:hover { color: #ffe0a0; }
+    .menu-toggle { display: none; border: 1px solid #ffffff99; color: white; background: #062c4566; border-radius: 10px; padding: 8px 12px; font-size: 1.1rem; }
+    .hero {
+      min-height: min(780px, 94vh); display: grid; align-items: center; position: relative; overflow: hidden;
+      background: linear-gradient(90deg, #031e2cbb 0%, #052f4266 45%, #031e2c12 100%), url("assets/viagem-capa.jpg") center 48%/cover no-repeat;
+      color: white;
+    }
+    .hero::after { content: ""; position: absolute; inset: auto 0 0; height: 180px; background: linear-gradient(transparent, var(--cream)); pointer-events: none; }
+    .hero-content { position: relative; z-index: 1; width: min(1100px, 100%); margin: 0 auto; padding: 110px 28px 145px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .22em; font-weight: 750; color: #ffe0a0; font-size: .78rem; }
+    h1 { margin: 10px 0 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(4.3rem, 13vw, 9.8rem); line-height: .92; letter-spacing: -.065em; font-weight: 800; font-style: italic; text-shadow: 0 6px 28px #001e2b77; }
+    .hero-subtitle { font-size: clamp(1.2rem, 3vw, 2rem); margin: 24px 0 12px; font-weight: 500; }
+    .hero p { max-width: 520px; font-size: clamp(1rem, 1.7vw, 1.2rem); color: #fff8e8; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; padding: 13px 21px; border-radius: 999px; font-weight: 800; text-decoration: none; transition: transform .2s, background .2s; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { color: #173447; background: var(--gold); box-shadow: 0 8px 24px #0002; }
+    .btn-outline { color: white; border: 1px solid #ffffffb8; background: #ffffff12; backdrop-filter: blur(5px); }
+    main { overflow: hidden; }
+    section { padding: 84px clamp(18px, 5vw, 72px); }
+    .section-wrap { width: min(1120px, 100%); margin: 0 auto; }
+    .section-kicker { color: #b57919; text-transform: uppercase; letter-spacing: .18em; font-size: .78rem; font-weight: 850; }
+    h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -.035em; margin: 10px 0 18px; color: var(--deep-blue); }
+    .intro { max-width: 680px; color: #50636d; font-size: 1.08rem; }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+    .story-grid img { width: 100%; display: block; border-radius: 24px; box-shadow: 0 20px 45px #0b34451c; }
+    .story-grid .copy { padding: 16px 0; }
+    .quote { margin-top: 24px; padding-left: 18px; border-left: 4px solid var(--gold); font: italic 1.3rem Georgia, serif; color: #52626a; }
+    .gallery { background: #eaf2f4; }
+    .gallery-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 30px; }
+    .gallery-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; }
+    .gallery-card { position: relative; overflow: hidden; border-radius: 20px; min-height: 250px; background: #d5e1e5; }
+    .gallery-card:first-child { grid-row: span 2; }
+    .gallery-card img { width: 100%; height: 100%; min-height: 250px; object-fit: cover; display: block; transition: transform .5s; }
+    .gallery-card:hover img { transform: scale(1.045); }
+    .gallery-card .caption { position: absolute; inset: auto 0 0; padding: 38px 22px 20px; color: white; font-weight: 800; font-size: 1.2rem; background: linear-gradient(transparent, #061f2dd9); }
+    .values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
+    .value { padding: 26px; border-radius: 18px; background: white; box-shadow: 0 12px 32px #10384b0d; }
+    .value .icon { font-size: 1.8rem; }
+    .value h3 { color: var(--deep-blue); margin: 10px 0 6px; }
+    .value p { color: #61727a; margin: 0; }
+    .cta { text-align: center; color: white; background: linear-gradient(120deg, #07344d, #0c689b); }
+    .cta h2 { color: white; }
+    .cta p { max-width: 650px; margin: 0 auto 24px; color: #e5f2f7; font-size: 1.08rem; }
+    footer { background: #052b40; color: #d7e6ec; padding: 28px 18px; text-align: center; font-size: .9rem; }
+    footer strong { color: white; }
+    .back-top { position: fixed; z-index: 10; right: 18px; bottom: 18px; border: 0; border-radius: 50%; width: 46px; height: 46px; color: #173447; background: var(--gold); font-size: 1.3rem; box-shadow: 0 6px 20px #0002; cursor: pointer; display: none; }
+    .back-top.visible { display: block; }
+    @media (max-width: 760px) {
+      .topbar { padding: 16px 18px; }
+      .menu-toggle { display: block; }
+      nav { display: none; position: absolute; top: 68px; right: 18px; left: 18px; padding: 16px; border-radius: 16px; background: #062c45f2; flex-direction: column; align-items: stretch; gap: 8px; }
+      nav.open { display: flex; }
+      nav a { padding: 9px 6px; }
+      .hero { min-height: 760px; min-height: 92svh; background-position: 58% center; }
+      .hero-content { padding: 115px 22px 135px; }
+      .hero p { max-width: 400px; }
+      section { padding-top: 62px; padding-bottom: 62px; }
+      .story-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .story-grid img { order: -1; }
+      .gallery-card:first-child { grid-row: auto; }
+      .gallery-card img { max-height: 370px; }
+      .gallery-head { display: block; }
+      .values { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Viagem, início">V<span>i</span>agem.</a>
+    <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">☰</button>
+    <nav id="menu" aria-label="Navegação principal">
+      <a href="#historia">A viagem</a>
+      <a href="#momentos">Momentos</a>
+      <a href="#essencia">Nossa essência</a>
+      <a href="#contato">Vamos nessa?</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <div class="eyebrow">Novos caminhos · Grandes histórias</div>
+        <h1>Viagem</h1>
+        <div class="hero-subtitle">Carro em trajeto.</div>
+        <p>Às vezes, o melhor destino é tudo aquilo que acontece pelo caminho. Pegue a estrada, curta a paisagem e aproveite cada quilômetro.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#momentos">Explorar momentos <span aria-hidden="true">&nbsp;↗</span></a>
+          <a class="btn btn-outline" href="#historia">Nossa inspiração</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="historia">
+      <div class="section-wrap story-grid">
+        <div class="copy">
+          <div class="section-kicker">A estrada chama</div>
+          <h2>Até que a casa distante se torna realidade.</h2>
+          <p class="intro">Uma estrada sinuosa, o céu aberto e a companhia certa. Viajar de carro é ter liberdade para mudar de rota, parar onde a vista encanta e transformar pequenos instantes em lembranças para a vida toda.</p>
+          <div class="quote">“Não é só sobre chegar. É sobre tudo o que sentimos durante o caminho.”</div>
+        </div>
+        <img src="assets/viagem-roteiro.jpg" alt="Estrada panorâmica atravessando montanhas durante uma viagem de carro" loading="lazy">
+      </div>
+    </section>
+
+    <section class="gallery" id="momentos">
+      <div class="section-wrap">
+        <div class="gallery-head">
+          <div>
+            <div class="section-kicker">Memórias pelo caminho</div>
+            <h2>Cada curva, uma história.</h2>
+            <p class="intro">Novos caminhos, boas companhias e aquela sensação de que o mundo é maior do que a rotina.</p>
+          </div>
+        </div>
+        <div class="gallery-grid">
+          <article class="gallery-card">
+            <img src="assets/viagem-companhia.jpg" alt="Viagem de carro com amigos e cachorro em uma estrada nas montanhas" loading="lazy">
+            <div class="caption">Boas companhias, sempre. ♡</div>
+          </article>
+          <article class="gallery-card">
+            <img src="assets/viagem-capa.jpg" alt="Carro em estrada cercada por montanhas ao pôr do sol" loading="lazy">
+            <div class="caption">Liberdade para ir além.</div>
+          </article>
+          <article class="gallery-card">
+            <img src="assets/viagem-roteiro.jpg" alt="Paisagem de montanhas e estrada com curvas" loading="lazy">
+            <div class="caption">O caminho também é destino.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="essencia">
+      <div class="section-wrap">
+        <div class="section-kicker">Muito além do destino</div>
+        <h2>O que faz uma viagem especial?</h2>
+        <p class="intro">É a soma dos detalhes: a música que toca, a conversa que se estende, a parada inesperada e as pessoas que tornam tudo inesquecível.</p>
+        <div class="values">
+          <article class="value"><div class="icon" aria-hidden="true">🛣️</div><h3>Novos caminhos</h3><p>Deixe espaço para o inesperado e descubra lugares que não estavam no roteiro.</p></article>
+          <article class="value"><div class="icon" aria-hidden="true">♡</div><h3>Boas companhias</h3><p>Amigos, família e nossos companheiros de quatro patas: a aventura fica melhor junto.</p></article>
+          <article class="value"><div class="icon" aria-hidden="true">🌄</div><h3>Grandes histórias</h3><p>Guarde as paisagens na memória e os momentos no coração.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contato">
+      <div class="section-wrap">
+        <div class="section-kicker">Sua próxima história começa aqui</div>
+        <h2>Pronto para pegar a estrada?</h2>
+        <p>Escolha um destino, reúna sua companhia favorita e permita-se aproveitar a jornada. O melhor ainda pode estar na próxima curva.</p>
+        <a class="btn btn-primary" href="#inicio">Voltar ao início ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Viagem — Carro em trajeto.</strong><br>
+    Feito para quem acredita que o caminho também faz parte do destino. <span id="year"></span>
+  </footer>
+  <button class="back-top" aria-label="Voltar ao topo" title="Voltar ao topo">↑</button>
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('#menu');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+      menuToggle.textContent = isOpen ? '✕' : '☰';
+    });
+    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      menu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+    const backTop = document.querySelector('.back-top');
+    window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 450));
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    document.querySelector('#year').textContent = ' © ' + new Date().getFullYear();
+  </script>
+</body>
+</html>
